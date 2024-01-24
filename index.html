@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemplo de Visualização de Dados com Chart.js</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Dados do Pedido</h2>
+
+  <table>
+    <tr>
+      <th>Chave</th>
+      <th>Valor</th>
+    </tr>
+    <tr>
+      <td>CD</td>
+      <td id="cd"></td>
+    </tr>
+    <tr>
+      <td>Pedido</td>
+      <td id="pedido"></td>
+    </tr>
+    <tr>
+      <td>Pedido UUID</td>
+      <td id="pedidoUUID"></td>
+    </tr>
+    <tr>
+      <td>Desc Status</td>
+      <td id="descStatus"></td>
+    </tr>
+    <!-- Adicione mais linhas conforme necessário para outros campos -->
+  </table>
+
+  <h2>Gráfico de Barras</h2>
+  <canvas id="myChart" width="400" height="200"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const data = [{
+      "cd": "300",
+      "pedido": "1298370703228686-1",
+      "pedidoUUID": "54934a3a-24c3-48d8-b797-d0452effc65d",
+      "descStatus": "outros",
+      // Adicione mais campos conforme necessário
+    }];
+
+    function fillTable() {
+      const keys = Object.keys(data[0]);
+
+      keys.forEach(key => {
+        const element = document.getElementById(key.toLowerCase());
+        if (element) {
+          element.textContent = data[0][key];
+        }
+      });
+    }
+
+    window.onload = function () {
+      fillTable();
+
+      const chartData = {
+        labels: ['CD', 'Pedido', 'Pedido UUID', 'Desc Status'],
+        datasets: [
+          {
+            label: 'Valores',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+            data: [
+              data[0].cd,
+              data[0].pedido,
+              data[0].pedidoUUID,
+              data[0].descStatus,
+            ],
+          },
+        ],
+      };
+
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    };
+  </script>
+</body>
+</html>
